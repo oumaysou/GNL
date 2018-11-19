@@ -6,43 +6,64 @@
 /*   By: oumaysou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 14:25:37 by oumaysou          #+#    #+#             */
-/*   Updated: 2018/11/16 17:26:00 by oumaysou         ###   ########.fr       */
+/*   Updated: 2018/11/19 13:36:39 by oumaysou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	get_next_line(const int fd, char **line)
+static t_list	*ft_search_fd(int fd, t_list **begin_list)
 {
-	int			ret;
-	char		buf[BUFF_SIZE + 1];
-	static char	*getall;
-	char		*freee;
+	t_list	*tmp;
 
-	if (!getall)
-		getall = ft_strdup("");
-	freee = NULL;
-	if (fd == -1 || !line || read(fd, buf, 0) == -1)
+	tmp = *begin_list;
+	while (tmp)
+	{
+		if ((int)tmp->content_size == fd)
+			return (tmp);
+		tmp = tmp->next;
+	}
+	tmp = ft_lstnew("", fd);
+	ft_lstadd(begin_list, tmp);
+	return (tmp);
+}
+
+static void		ft_line(t_list *getall, int *ret, char **line)
+{
+	*ret = 0;
+	while (((char *)(getall->content))[*ret] != '\n' &&
+			((char*)(getall->content))[*ret])
+		(*ret)++;
+	*line = ft_strsub(getall->content, 0, *ret);
+	if (((char *)(getall->content))[*ret] == '\n')
+		(*ret)++;
+}
+
+int				get_next_line(const int fd, char **line)
+{
+	int				ret;
+	char			buf[BUFF_SIZE + 1];
+	static t_list	*getall;
+	char			*freee;
+	t_list			*tmp;
+
+	if (fd < 0 || !line || read(fd, buf, 0) < 0)
 		return (-1);
+	tmp = getall;
+	getall = ft_search_fd(fd, &tmp);
 	while ((ret = read(fd, buf, BUFF_SIZE)))
 	{
 		buf[ret] = '\0';
-		freee = getall;
-		getall = ft_strjoin(getall, buf);
+		freee = getall->content;
+		getall->content = ft_strjoin(getall->content, buf);
 		free(freee);
-		if (ft_strchr(getall, '\n'))
+		if (ft_strchr(getall->content, '\n'))
 			break ;
 	}
-	ret = 0;
-	while (getall[ret] != '\n' && getall[ret])
-		ret++;
-	*line = ft_strsub(getall, 0, ret);
-	if (getall[ret] == '\n')
-		ret++;
-	freee = getall;
-	getall = ft_strdup(getall + ret);
+	ft_line(getall, &ret, line);
+	freee = getall->content;
+	getall->content = ft_strdup(getall->content + ret);
 	free(freee);
-	if (!ret)
-		return (0);
-	return (1);
+	getall = tmp;
+	return (ret ? 1 : 0);
 }

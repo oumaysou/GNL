@@ -6,7 +6,7 @@
 #    By: oumaysou <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/13 11:53:28 by oumaysou          #+#    #+#              #
-#    Updated: 2018/11/15 16:29:20 by oumaysou         ###   ########.fr        #
+#    Updated: 2018/11/19 15:06:06 by oumaysou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,14 @@ FLAGS = -Wall -Wextra -Werror
 
 HEADER = libft.h
 
+.PHONY : all clean fclean re
+.SILENT:
+
 all: $(NAME)
 	
-$(NAME):
+$(NAME): $(OBJ)
 		gcc -c $(FLAGS) -I.$(HEADER) $(SRC)
-		ar rc $(NAME) $(OBJ)
+		ar rc $(NAME) $(OBJ) $?
 clean:
 		rm -f $(OBJ)
 
