@@ -6,13 +6,13 @@
 /*   By: oumaysou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/14 14:25:37 by oumaysou          #+#    #+#             */
-/*   Updated: 2018/11/19 13:36:39 by oumaysou         ###   ########.fr       */
+/*   Updated: 2018/11/27 10:15:56 by oumaysou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft/includes/get_next_line.h"
 
-static t_list	*ft_search_fd(int fd, t_list **begin_list)
+static t_list	*ft_search_fd(const int fd, t_list **begin_list)
 {
 	t_list	*tmp;
 

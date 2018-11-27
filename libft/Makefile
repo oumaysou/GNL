@@ -6,7 +6,7 @@
 #    By: oumaysou <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/13 11:53:28 by oumaysou          #+#    #+#              #
-#    Updated: 2018/11/19 15:06:06 by oumaysou         ###   ########.fr        #
+#    Updated: 2018/11/27 10:19:43 by oumaysou         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,9 @@ OBJ = $(SRC:.c=.o)
 
 FLAGS = -Wall -Wextra -Werror
 
-HEADER = libft.h
+HEADER = includes/libft.h
 
 .PHONY : all clean fclean re
-.SILENT:
 
 all: $(NAME)
 	
